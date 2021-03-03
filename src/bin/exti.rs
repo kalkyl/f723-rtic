@@ -24,21 +24,20 @@ mod app {
     fn init(mut ctx: init::Context) -> init::LateResources {
         // Enable SYSCFG.
         ctx.device.RCC.apb2enr.write(|w| w.syscfgen().enabled());
-        
+
         let gpioa = ctx.device.GPIOA.split();
         let led = gpioa.pa5.into_push_pull_output();
-        
+
         let mut btn = gpioa.pa0.into_pull_down_input();
         btn.make_interrupt_source(&mut ctx.device.SYSCFG, &mut ctx.device.RCC);
         btn.trigger_on_edge(&mut ctx.device.EXTI, Edge::RISING);
         btn.enable_interrupt(&mut ctx.device.EXTI);
-        
+
         // Set up the system clock.
         let rcc = ctx.device.RCC.constrain();
         let _clocks = rcc.cfgr.sysclk(168.mhz()).freeze();
 
         defmt::info!("Press button!");
-
         init::LateResources { btn, led }
     }
 

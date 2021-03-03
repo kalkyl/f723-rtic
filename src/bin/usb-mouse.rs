@@ -10,7 +10,7 @@ mod app {
         gpio::{gpioa::PA0, Input, PullDown},
         otg_fs::{UsbBus, UsbBusType, USB},
         prelude::*,
-        rcc::{HSEClock, HSEClockMode}
+        rcc::{HSEClock, HSEClockMode},
     };
     use usb_device::{bus::UsbBusAllocator, prelude::*};
     use usbd_hid::{

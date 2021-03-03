@@ -9,7 +9,7 @@ mod app {
     use stm32f7xx_hal::{
         otg_fs::{UsbBus, UsbBusType, USB},
         prelude::*,
-        rcc::{HSEClock, HSEClockMode}
+        rcc::{HSEClock, HSEClockMode},
     };
     use usb_device::{bus::UsbBusAllocator, prelude::*};
     use usbd_serial::SerialPort;
