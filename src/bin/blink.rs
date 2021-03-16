@@ -7,7 +7,7 @@ use f723_rtic as _; // global logger + panicking-behavior + memory layout
 #[rtic::app(device = stm32f7xx_hal::pac, peripherals = true, dispatchers = [USART1])]
 mod app {
     use dwt_systick_monotonic::{
-        consts::{U0, U48},
+        consts::{U0, U168},
         DwtSystick,
     };
     use embedded_hal::digital::v2::ToggleableOutputPin;
@@ -18,7 +18,7 @@ mod app {
     };
 
     #[monotonic(binds = SysTick, default = true)]
-    type MyMono = DwtSystick<U48, U0, U0>; // 48 MHz
+    type MyMono = DwtSystick<U168, U0, U0>; // 168 MHz
 
     #[resources]
     struct Resources {
@@ -32,7 +32,7 @@ mod app {
 
         // Set up the system clock.
         let rcc = ctx.device.RCC.constrain();
-        let clocks = rcc.cfgr.sysclk(48.mhz()).freeze();
+        let clocks = rcc.cfgr.sysclk(168.mhz()).freeze();
 
         let gpioa = ctx.device.GPIOA.split();
         let led = gpioa.pa5.into_push_pull_output();
