@@ -26,7 +26,7 @@ mod app {
     }
 
     #[init]
-    fn init(ctx: init::Context) -> init::LateResources {
+    fn init(ctx: init::Context) -> (init::LateResources, init::Monotonics) {
         static mut EP_MEMORY: [u32; 1024] = [0; 1024];
         static mut USB_BUS: Option<UsbBusAllocator<UsbBusType>> = None;
 
@@ -64,7 +64,10 @@ mod app {
             .build();
 
         defmt::info!("Mouse example");
-        init::LateResources { btn, hid, usb_dev }
+        (
+            init::LateResources { btn, hid, usb_dev },
+            init::Monotonics(),
+        )
     }
 
     #[idle(resources=[btn, hid])]

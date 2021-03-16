@@ -21,7 +21,7 @@ mod app {
     }
 
     #[init]
-    fn init(ctx: init::Context) -> init::LateResources {
+    fn init(ctx: init::Context) -> (init::LateResources, init::Monotonics) {
         static mut EP_MEMORY: [u32; 1024] = [0; 1024];
         static mut USB_BUS: Option<UsbBusAllocator<UsbBusType>> = None;
 
@@ -57,7 +57,7 @@ mod app {
             .build();
 
         defmt::info!("Send me a string!");
-        init::LateResources { serial, usb_dev }
+        (init::LateResources { serial, usb_dev }, init::Monotonics())
     }
 
     #[idle]

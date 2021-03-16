@@ -28,7 +28,7 @@ mod app {
     }
 
     #[init]
-    fn init(ctx: init::Context) -> init::LateResources {
+    fn init(ctx: init::Context) -> (init::LateResources, init::Monotonics) {
         // Set up the system clock.
         let mut rcc = ctx.device.RCC.constrain();
         let clocks = rcc
@@ -56,7 +56,7 @@ mod app {
 
         defmt::info!("I2C example!");
         cortex_m::asm::delay(216_000_000);
-        init::LateResources { i2c }
+        (init::LateResources { i2c }, init::Monotonics())
     }
 
     #[idle(resources=[i2c])]
@@ -67,7 +67,7 @@ mod app {
             ctx.resources.i2c.lock(|i2c| {
                 i2c.write_read(ADDR, &ID_REG.to_be_bytes(), &mut buf).ok();
             });
-            defmt::info!("Device ID: {:?}", u16::from_be_bytes(buf));
+            defmt::info!("Device ID: {:x}", u16::from_be_bytes(buf));
             cortex_m::asm::delay(216_000_000);
 
             // Get Vol

@@ -21,7 +21,7 @@ mod app {
     }
 
     #[init]
-    fn init(mut ctx: init::Context) -> init::LateResources {
+    fn init(mut ctx: init::Context) -> (init::LateResources, init::Monotonics) {
         // Enable SYSCFG.
         ctx.device.RCC.apb2enr.write(|w| w.syscfgen().enabled());
 
@@ -38,7 +38,7 @@ mod app {
         let _clocks = rcc.cfgr.sysclk(168.mhz()).freeze();
 
         defmt::info!("Press button!");
-        init::LateResources { btn, led }
+        (init::LateResources { btn, led }, init::Monotonics())
     }
 
     #[idle]
