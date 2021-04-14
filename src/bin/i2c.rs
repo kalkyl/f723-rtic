@@ -5,7 +5,7 @@
 
 use f723_rtic as _; // global logger + panicking-behavior + memory layout
 
-#[rtic::app(device = stm32f7xx_hal::pac, peripherals = true)]
+#[rtic::app(device = stm32f7xx_hal::device, peripherals = true)]
 mod app {
     use stm32f7xx_hal::{
         gpio::{
@@ -13,7 +13,7 @@ mod app {
             Alternate, AF4,
         },
         i2c::{BlockingI2c, Mode},
-        pac::I2C1,
+        device::I2C1,
         prelude::*,
         rcc::{HSEClock, HSEClockMode},
     };
@@ -34,8 +34,6 @@ mod app {
         let clocks = rcc
             .cfgr
             .hse(HSEClock::new(25.mhz(), HSEClockMode::Bypass))
-            .use_pll()
-            .use_pll48clk()
             .sysclk(216.mhz())
             .freeze();
 

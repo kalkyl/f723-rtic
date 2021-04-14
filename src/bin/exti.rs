@@ -4,7 +4,7 @@
 
 use f723_rtic as _; // global logger + panicking-behavior + memory layout
 
-#[rtic::app(device = stm32f7xx_hal::pac, peripherals = true)]
+#[rtic::app(device = stm32f7xx_hal::device, peripherals = true)]
 mod app {
     use embedded_hal::digital::v2::ToggleableOutputPin;
     use stm32f7xx_hal::{
@@ -29,7 +29,7 @@ mod app {
         let led = gpioa.pa5.into_push_pull_output();
 
         let mut btn = gpioa.pa0.into_pull_down_input();
-        btn.make_interrupt_source(&mut ctx.device.SYSCFG, &mut ctx.device.RCC);
+        btn.make_interrupt_source(&mut ctx.device.SYSCFG);
         btn.trigger_on_edge(&mut ctx.device.EXTI, Edge::RISING);
         btn.enable_interrupt(&mut ctx.device.EXTI);
 

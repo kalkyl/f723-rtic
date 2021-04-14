@@ -4,7 +4,7 @@
 
 use f723_rtic as _; // global logger + panicking-behavior + memory layout
 
-#[rtic::app(device = stm32f7xx_hal::pac, peripherals = true)]
+#[rtic::app(device = stm32f7xx_hal::device, peripherals = true)]
 mod app {
     use stm32f7xx_hal::{
         gpio::{gpioa::PA0, Input, PullDown},

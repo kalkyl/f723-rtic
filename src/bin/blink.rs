@@ -4,12 +4,9 @@
 
 use f723_rtic as _; // global logger + panicking-behavior + memory layout
 
-#[rtic::app(device = stm32f7xx_hal::pac, peripherals = true, dispatchers = [USART1])]
+#[rtic::app(device = stm32f7xx_hal::device, peripherals = true, dispatchers = [USART1])]
 mod app {
-    use dwt_systick_monotonic::{
-        consts::{U0, U168},
-        DwtSystick,
-    };
+    use dwt_systick_monotonic::DwtSystick; 
     use embedded_hal::digital::v2::ToggleableOutputPin;
     use rtic::time::duration::Seconds;
     use stm32f7xx_hal::{
@@ -18,7 +15,7 @@ mod app {
     };
 
     #[monotonic(binds = SysTick, default = true)]
-    type MyMono = DwtSystick<U168, U0, U0>; // 168 MHz
+    type MyMono = DwtSystick<168_000_000>; // 168 MHz
 
     #[resources]
     struct Resources {
